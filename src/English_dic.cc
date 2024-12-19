@@ -49,6 +49,10 @@ void English_dic::load_stop_words(string file_path)//加载停用词
         stop.insert(ans);
         ans.clear();
     }
+
+    /*for(auto &elem : stop){
+        std::cout<<elem<<" ";
+    }*/
 }
 
 void English_dic::word_count(string file_path)//单词统计
@@ -73,6 +77,7 @@ void English_dic::word_count(string file_path)//单词统计
     delete  []tmp;
     ifs.close();
 
+    //std::cout<<buf<<"\n";
     //分词
     std::istringstream iss(buf);
     string tmp2;
@@ -81,19 +86,29 @@ void English_dic::word_count(string file_path)//单词统计
         if(it == stop.end()){
             //插入
             auto it_m = dic.find(tmp2);
-            int value = it_m->second;
-            dic.insert(std::make_pair("tmp2",value+1));
+            if(it_m!=dic.end()){
+                dic[tmp2]++;
+                //std::cout<<it_m->first<<" "<<it_m->second<<"\n";
+            }else{
+                dic.insert(std::make_pair(tmp2,1));
+            }
         }else{
             //不插入
         }
 
         tmp2.clear();
     }
+
+    /*
+    for(auto &elem:dic){
+        std::cout<<elem.first<<" "<<elem.second<<"\n";
+    }
+    */
 }
 
 void English_dic::update_dic(string file_path)//存储成词典
 {
-    std::ofstream ofs(file_path,std::ios::app);
+    std::ofstream ofs(file_path);
     for(auto &elem :dic){
         ofs<<elem.first<<" "<<elem.second<<"\n";
     }

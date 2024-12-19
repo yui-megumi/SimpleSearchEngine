@@ -19,6 +19,7 @@ public:
     void update_dic(string file_path);//存储成词典
 
 private:
+    friend class English_index;
     string buf;//用于存放中间数据
     set<string> stop;//停用词
     map<string,int> dic;//词典
