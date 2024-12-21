@@ -14,7 +14,6 @@ void Chinese_dic_index::handle_flush(string file_path)//存储待处理的中文
         std::cerr<<"ifs open file fail!";
         return;
     }
-
     //获取整个文件的大小
     ifs.seekg(0,std::ios::end);
     long length = ifs.tellg();//获取总字符数
@@ -77,6 +76,7 @@ void Chinese_dic_index::handle_dic(string stop_path)//将清洗后的文件存�
     cppjieba::Jieba jb(dict_path,model_path,user_dict_path,idf_path,stop_word_path);
 
     vector<string>words;
+
     jb.Cut(buf,words,true);
 
     //将词插入map中
@@ -153,7 +153,7 @@ void Chinese_dic_index::handle_index()//创建中英文混合索引
 
 void Chinese_dic_index::to_dic(string file_path)//将数据持久化
 {
-    std::ofstream ofs(file_path);
+    std::ofstream ofs(file_path,std::ios::app);
     for(auto &elem :dic){
         ofs<<elem.first<<" "<<elem.second<<"\n";
     }
@@ -161,7 +161,7 @@ void Chinese_dic_index::to_dic(string file_path)//将数据持久化
 }
 
 void Chinese_dic_index::to_index(string file_path){
-    std::ofstream ofs(file_path);
+    std::ofstream ofs(file_path,std::ios::app);
     for(auto &elem :index){
         ofs<<elem.first<<" ";
         for(auto it=elem.second.begin();it!=elem.second.end();it++){

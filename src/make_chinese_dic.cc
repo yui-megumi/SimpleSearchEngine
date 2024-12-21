@@ -1,12 +1,41 @@
 #include"../include/Chinese_dic_index.h"
+#include<func.h>
 
 int main(){
-    Chinese_dic_index cdi;
-    cdi.handle_flush("../resource/C3-Art0019.txt");
-    cdi.handle_dic("../resource/stop_words_zh.txt");
-    cdi.to_dic("../resource/Chinese_dic.txt");
+    DIR* pdir = opendir("../resource/art");
+    if (pdir == NULL) {
+    error(1, errno, "opendir" );
+    }
 
-    cdi.handle_index();
-    cdi.to_index("../resource/Chinese_index.txt");
+    errno = 0;
+
+    struct dirent* pdirent;
+    
+    Chinese_dic_index chi;
+    while ((pdirent = readdir(pdir)) != NULL) {
+        string s("../resource/art/");
+        string add(pdirent->d_name);
+        s += add;
+        std::cout<<s<<"\n";
+        if(add.compare(".")==0){
+            continue;
+        }
+        if(add.compare("..")==0){
+            continue;
+        }
+        chi.handle_flush(s);
+        chi.handle_dic("../resource/stop_words_zh.txt");
+        chi.handle_index();
+        chi.to_dic("../data/Chinese_dic.dat");
+        chi.to_index("../data/Chinese_index.dat");
+    }
+
+    closedir(pdir);
+
+    if (errno) {
+        // 发生了错误
+        error(1, errno, "readdir");
+    }
+
     return 0;
 }

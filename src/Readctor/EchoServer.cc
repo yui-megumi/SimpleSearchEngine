@@ -17,7 +17,7 @@ MyTask::MyTask(const string &msg, const TcpConnectionPtr &con)
 
 void MyTask::process()
 {
-    _con->sendInLoop(_msg);
+    _con->sendInLoop(_msg);//msg表示从客户端收到的信息
 }
 
 EchoServer::EchoServer(size_t threadNum, size_t queSize

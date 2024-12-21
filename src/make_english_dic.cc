@@ -6,7 +6,7 @@ int main(){
 
     ed.word_count("../resource/flush_english.txt");
 
-    ed.update_dic("../data/dict.dat");
+    ed.update_dic("../data/english_dict.dat");
 
     return 0;
 }
